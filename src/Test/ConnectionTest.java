@@ -236,6 +236,16 @@ public class ConnectionTest {
 	public void getConnectionState(){
 		assertEquals(connection.getState(),1);
 	}
+	
+	@Test
+	public void recordMessageIntoCurrentMailbox(){
+		when(mailSystem.findMailbox("1")).thenReturn(mockedMailbox);
+		when(mockedMailbox.checkPasscode("1")).thenReturn(true);
+		mailboxSelected();
+		connection.record("hola");
+		connection.hangup();;
+		verify(telephone,times(2)).speak("Enter mailbox number followed by #");
+	}
 
 
 }
